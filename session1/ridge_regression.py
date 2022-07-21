@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression, Ridge
+from matplotlib import pyplot as plt
 
 PATH = "dataset/death_rate.txt"
 
@@ -125,9 +125,9 @@ if __name__ == "__main__":
     model.fit(X_train=X_train, y_train=y_train, LAMBDA=0)
     y_predicted = model.predict(X_new=X_test)
     print("RSS (Lambda=0):", model.compute_RSS(y_new=y_test, y_predicted=y_predicted))
-    
+
     #determine the best value of lambda
-    best_LAMBDA = 0.002 #model.get_the_best_lambda(X_train=X_train, y_train=y_train)
+    best_LAMBDA = model.get_the_best_lambda(X_train=X_train, y_train=y_train)
     print("Best LAMBDA:", best_LAMBDA)
     model.fit(X_train=X_train, y_train=y_train, LAMBDA=best_LAMBDA)
     y_predicted = model.predict(X_new=X_test)
