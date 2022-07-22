@@ -103,13 +103,13 @@ def get_tf_idf(data_path):
             words_tfidfs.append((word_IDs[word], tf_idf_value))
             sum_squares += tf_idf_value**2
         
-        words_tfidfs_normalized = [str(index) + ":" + str(tf_idf_value/np.sqrt(sum_squares)) for index, tf_idf_value in words_tfidfs]
+        words_tfidfs_normalized = [str(index) + ":" + str(tf_idf_value*1./np.sqrt(sum_squares)) for index, tf_idf_value in words_tfidfs]
         
         sparse_rep = " ".join(words_tfidfs_normalized)
         data_tf_idf.append((label, doc_id, sparse_rep))
 
-    with open("datasets/20news_bydate/data_tf_idf.txt", "a") as f:
+    with open("datasets/20news_bydate/20news_test_tfidf.txt", "w") as f:
         for label, doc_id, tf_idf in data_tf_idf:
             f.write(str(label) + "<fff>"+str(doc_id)+"<fff>" + str(tf_idf)+"\n")
 
-get_tf_idf("datasets/20news_bydate/20news_full_processes.txt")
+get_tf_idf("datasets/20news_bydate/20news_test_processes.txt")
