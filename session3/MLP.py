@@ -127,9 +127,9 @@ def load_dataset() -> tuple[DataReader]:
         vocab_size=vocab_size)
     return train_data_reader, test_data_reader
     
-with open("datasets/20news_bydate/words_idfs.txt") as f:
-    vocab_size = len(f.read().splitlines())
 if __name__ == "__main__":
+    with open("datasets/20news_bydate/words_idfs.txt") as f:
+        vocab_size = len(f.read().splitlines())
     mlp = MLP(vocab_size=vocab_size, hidden_size=50)
     predicted_labels, loss = mlp.build_graph()
     train_op = mlp.trainer(loss=loss, learning_rate=0.1)

@@ -39,7 +39,7 @@ def load_data(data_path: str) -> Tuple[list]:
         labels.append(label)
     return data, labels
 
-def compute_purity(labels, predicted_labels):
+def compute_purity(labels: str, predicted_labels: list) -> float:
     majority_sum = 0
     clusters = [[] for i in range(20)]
     for index, predicted_label in enumerate(predicted_labels):

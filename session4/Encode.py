@@ -9,7 +9,7 @@ cwd = cwd.replace("\\session4", "")
 os.chdir(cwd)
 print(os.getcwd())
 
-def encode_data(data_path, vocab_path):
+def encode_data(data_path: str, vocab_path: str):
     with open(vocab_path) as f:
         vocab = dict([(word, word_ID+2) for word_ID, word in enumerate(f.read().splitlines())])
         
