@@ -1,7 +1,5 @@
-from typing import List, Union
+from typing import Union
 import numpy as np
-from sklearn.cluster import KMeans
-from scipy.sparse import csr_matrix
 import os
 from collections import defaultdict
 
@@ -13,7 +11,7 @@ print(os.getcwd())
 
 #Member class
 class Member:
-    def __init__(self, r_d, label=None, doc_id=None):
+    def __init__(self, r_d, label: int =None, doc_id: int=None):
         self._r_d = r_d
         self._label = label
         self._doc_id = doc_id
@@ -68,7 +66,7 @@ class Kmeans:
         
     def random_init(self, seed_value: int):
         if self._num_clusters <= 0: return
-        np.random.seed = seed_value
+        np.random.seed(seed_value)
         
         data = np.array([member._r_d for member in self._data])
         similarity_mat = data.dot(data.T)
@@ -76,7 +74,8 @@ class Kmeans:
         sorted_indices = stds.argsort()[::-1]
         centroids = []
         
-        quantile = np.quantile(similarity_mat, 0.4)
+        #set quantile limitation
+        quantile = np.quantile(similarity_mat, 0.3)
         
         for index in sorted_indices:
             if len(centroids) == self._num_clusters: break
@@ -151,7 +150,7 @@ class Kmeans:
             if self.stopping_condition(criterion, threshold):
                 break
     
-    def compute_purity(self):
+    def compute_purity(self)-> float:
         majority_sum = 0
         for cluster in self._clusters:
             member_labels = [member._label for member in cluster._members]
@@ -159,7 +158,7 @@ class Kmeans:
             majority_sum += max_count
         return majority_sum / len(self._data)
     
-    def compute_NMI(self):
+    def compute_NMI(self) -> float:
         I_value, H_omega, H_C, N = 0., 0., 0., len(self._data)
         for cluster in self._clusters:
             wk = len(cluster._members)
@@ -175,15 +174,13 @@ class Kmeans:
                 cj = self._label_count[label]
                 H_C += -cj/N * np.log10(cj/N)
         return I_value * 2/(H_omega + H_C)
-    
-def clustering_with_KMeans():
-    pass
-    #data, labels = load
-model = Kmeans(20)
-print("Start loading")
-model.load_data("datasets/20news_bydate/data_tf_idf.txt")
-print("Finish loading data")
-print("Model is running")
-model.run(seed_value=1, criterion="max_iters", threshold=100)
-print("Model has finished")
-print(model.compute_purity())
+
+if __name__ == "__main__":
+    model = Kmeans(20)
+    print("Start loading data")
+    model.load_data("datasets/20news_bydate/data_tf_idf.txt")
+    print("Finish loading data")
+    print("Model is running")
+    model.run(seed_value=1, criterion="max_iters", threshold=30)
+    print("Model has finished")
+    print("Purity:", model.compute_purity())

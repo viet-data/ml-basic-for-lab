@@ -83,5 +83,6 @@ def classifying_with_SVMs():
 def compute_accuracy(predicted_y, expected_y):
     return np.sum(predicted_y == expected_y)/len(predicted_y)
 
-#classifying_with_linear_SVMs()
-clustering_with_Kmeans()
+if __name__ == "__main__":
+    #classifying_with_linear_SVMs()
+    clustering_with_Kmeans()
